@@ -40,51 +40,52 @@ class PostMetaController {
 	}
 
 
-
 	function get_package_meta_args() {
 
 		return apply_filters( 'walya_package_meta_field', [
-			'layout'            => [
-				'label'   => __( 'Layout', 'walyatravels' ),
-				'type'    => 'select',
-				'options' => [
-					'default'       => __( 'Default from customizer', 'walyatravels' ),
-					'full-width'    => __( 'Full Width', 'walyatravels' ),
-					'left-sidebar'  => __( 'Left Sidebar', 'walyatravels' ),
-					'right-sidebar' => __( 'Right Sidebar', 'walyatravels' ),
-				],
-				'default' => 'default',
+			'regular_price' => [
+				'label' => __( 'Regular Price', 'walyatravels' ),
+				'type'  => 'number',
 			],
 
-			'header_style'      => [
-				'label'   => __( 'Header Style', 'walyatravels' ),
-				'type'    => 'select',
-				'options' => [
-					'default' => __( 'Default from customizer', 'walyatravels' ),
-					'1'       => __( 'Layout 1', 'walyatravels' ),
-					'2'       => __( 'Layout 2', 'walyatravels' ),
-					'3'       => __( 'Layout 3', 'walyatravels' ),
-					'4'       => __( 'Layout 4', 'walyatravels' ),
-					'5'       => __( 'Layout 5', 'walyatravels' ),
-				],
-				'default' => 'default',
+			'offer_price' => [
+				'label' => __( 'Offer Price', 'walyatravels' ),
+				'type'  => 'number',
 			],
 
-
-			'package_'      => [
-				'label'   => __( 'Header Style', 'walyatravels' ),
-				'type'    => 'select',
-				'options' => [
-					'default' => __( 'Default from customizer', 'walyatravels' ),
-					'1'       => __( 'Layout 1', 'walyatravels' ),
-					'2'       => __( 'Layout 2', 'walyatravels' ),
-					'3'       => __( 'Layout 3', 'walyatravels' ),
-					'4'       => __( 'Layout 4', 'walyatravels' ),
-					'5'       => __( 'Layout 5', 'walyatravels' ),
-				],
-				'default' => 'default',
+			'airlines' => [
+				'label' => __( 'Airlines', 'walyatravels' ),
+				'type'  => 'text',
 			],
 
+			'accommodation' => [
+				'label' => __( 'Accommodation', 'walyatravels' ),
+				'type'  => 'text',
+			],
+
+			'contact' => [
+				'label' => __( 'Contact', 'walyatravels' ),
+				'type'  => 'text',
+			],
+
+			'rating' => [
+				'label'       => __( 'Rating', 'walyatravels' ),
+				'type'        => 'select',
+				'description' => 'Rating the package within 5',
+				'options'     => [
+					'1' => __( '1 Star', 'neuzin-core' ),
+					'2' => __( '2 Star', 'neuzin-core' ),
+					'3' => __( '3 Star', 'neuzin-core' ),
+					'4' => __( '4 Star', 'neuzin-core' ),
+					'5' => __( '5 Star', 'neuzin-core' ),
+				],
+				'default'     => '5',
+			],
+
+			'booking_url' => [
+				'label' => __( 'Booking Link (optional)', 'walyatravels' ),
+				'type'  => 'text',
+			],
 
 		] );
 	}
