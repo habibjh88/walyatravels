@@ -1,0 +1,30 @@
+{
+	"name": "devofwp/walyatravels",
+	"description": "DevofWP WordPress core plugin",
+	"keywords": [
+		"WordPress",
+		"Plugin",
+		"Starter"
+	],
+	"homepage": "https://github.com/DevofWP",
+	"license": "GPL-3.0",
+	"version": "4.0.0",
+	"authors": [
+		{
+			"name": "DevofWP",
+			"email": "support@devofwp.com",
+			"homepage": "https://devofwp.com",
+			"role": "Developer"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"Walyatravels\\": "./app"
+		}
+	},
+	"config": {
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": false
+		}
+	}
+}
