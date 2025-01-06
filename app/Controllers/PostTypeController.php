@@ -3,7 +3,7 @@
 namespace Walyatravels\Controllers;
 
 use Walyatravels\Traits\SingletonTraits;
-use Walyatravels\Generator\CPTGenerator;
+use NeuzinCore\Generator\CPTGenerator;
 
 class PostTypeController {
 	use SingletonTraits;

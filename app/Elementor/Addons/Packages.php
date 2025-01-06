@@ -7,14 +7,14 @@
 
 namespace Walyatravels\Elementor\Addons;
 
+use RawAddons\Abstracts\ElementorBase;
 use Elementor\Controls_Manager;
-use Walyatravels\Helper\Fns;
-use WALYA\Helpers\Fns as ThemeFns;
-use Walyatravels\Abstracts\ElementorBase;
+use RawAddons\Helper\Fns;
 use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
+use RawAddons\Modules\Thumbnail;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -23,7 +23,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Post Class
  */
-class Projects extends ElementorBase {
+class Packages extends ElementorBase {
 
 	/**
 	 * Class Constructor
@@ -33,9 +33,10 @@ class Projects extends ElementorBase {
 	 *
 	 * @throws \Exception
 	 */
+
 	public function __construct( $data = [], $args = null ) {
-		$this->walya_name = esc_html__( 'Packages', 'walyatravels' );
-		$this->walya_base = 'walya-packages';
+		$this->rawadd_name = esc_html__( 'Walya Packages', 'walyatravels' );
+		$this->rawadd_base = 'walya-packages';
 		parent::__construct( $data, $args );
 	}
 
@@ -233,7 +234,7 @@ class Projects extends ElementorBase {
 				'type'                 => 'raw-select2',
 				'label'                => esc_html__( 'Choose Categories', 'shopbuilder' ),
 				'source_name'          => 'taxonomy',
-				'source_type'          => 'walya-project-category',
+				'source_type'          => 'walya-packages-category',
 				'multiple'             => true,
 				'label_block'          => true,
 				'minimum_input_length' => 1,
@@ -250,7 +251,7 @@ class Projects extends ElementorBase {
 				'label'                => __( 'Enter post IDs', 'walyatravels' ),
 				'description'          => __( 'Enter the post IDs separated by comma', 'walyatravels' ),
 				'source_name'          => 'post',
-				'source_type'          => 'walya-project',
+				'source_type'          => 'walya-packages',
 				'multiple'             => true,
 				'label_block'          => true,
 				'minimum_input_length' => 3,
@@ -277,7 +278,7 @@ class Projects extends ElementorBase {
 				'label'                => __( 'Exclude posts', 'walyatravels' ),
 				'description'          => __( 'Choose posts for exclude', 'walyatravels' ),
 				'source_name'          => 'post',
-				'source_type'          => 'walya-project',
+				'source_type'          => 'walya-packages',
 				'multiple'             => true,
 				'label_block'          => true,
 				'minimum_input_length' => 3,
@@ -642,7 +643,7 @@ class Projects extends ElementorBase {
 				'label'       => __( 'Choose Meta', 'walyatravels' ),
 				'type'        => Controls_Manager::SELECT2,
 				'multiple'    => true,
-				'options'     => ThemeFns::blog_meta_list(),
+				'options'     => Fns::blog_meta_list(),
 				'label_block' => true,
 				'description' => __( 'Select post meta.', 'walyatravels' ),
 			]
@@ -754,7 +755,7 @@ class Projects extends ElementorBase {
 		$object->start_controls_section(
 			'readmore_style',
 			[
-				'label'     => __( 'Read More Style', 'walyatravels' ),
+				'label'     => __( 'Book Now Style', 'walyatravels' ),
 				'tab'       => Controls_Manager::TAB_STYLE,
 				'condition' => [
 					'readmore_visibility' => 'yes'
@@ -768,7 +769,7 @@ class Projects extends ElementorBase {
 			[
 				'label'       => __( 'Button Text', 'walyatravels' ),
 				'type'        => Controls_Manager::TEXT,
-				'default'     => __( 'Read More', 'walyatravels' ),
+				'default'     => __( 'Book Now', 'walyatravels' ),
 				'placeholder' => __( 'Type your title here', 'walyatravels' ),
 			]
 		);
@@ -1041,7 +1042,7 @@ class Projects extends ElementorBase {
 		$data = $this->get_settings();
 
 		$args = [
-			'post_type'           => 'walya-project',
+			'post_type'           => 'walya-packages',
 			'ignore_sticky_posts' => 1,
 			'posts_per_page'      => $data['post_limit'],
 			'post_status'         => 'publish',
@@ -1055,54 +1056,104 @@ class Projects extends ElementorBase {
 			$args['order'] = $data['order'];
 		}
 
-		if ( $data['post_source'] == 'by_category' && ! empty( $data['categories'] ) ) {
-			$args['tax_query'] = [
-				[
-					'taxonomy' => 'walya-project-category',
-					'field'    => 'term_id',
-					'terms'    => $data['categories'],
-				],
-			];
-		}
-
-		if ( $data['post_source'] == 'by_id' && ! empty( $data['post_id'] ) ) {
-			$args['post__in'] = $data['post_id'];
-		}
-
-		if ( ! empty( $data['exclude'] ) ) {
-			$args['post__not_in'] = $data['exclude'];
-		}
-
 		if ( $data['offset'] ) {
 			$args['offset'] = $data['offset'];
 		}
 
 		$query = new \WP_Query( $args );
 
-		$common_class = 'blog-post-card walya-project-item';
-		$blog_style   = 'blog-' . $data['layout'];
-		$masonry      = false ? 'masonry-item' : '';
-		$post_classes = ThemeFns::class_list( [
-			'blog-post-card',
-			$common_class,
-			$blog_style,
-			$masonry,
-			Fns::grid_column( $data )
-		] );
+		$default = [ '4', '6', '12' ];
+
+		$grid_column_lg = ! empty( $data['grid_column'] ) ? $data['grid_column'] : $default[0];
+		$grid_column_md = ! empty( $data['grid_column_tablet'] ) ? $data['grid_column_tablet'] : $default[1];
+		$grid_column_sm = ! empty( $data['grid_column_mobile'] ) ? $data['grid_column_mobile'] : $default[2];
+
+		$post_classes = "col-lg-$grid_column_lg col-md-$grid_column_md col-sm-$grid_column_sm col-$grid_column_sm";
+
+		$post_classes .= ' walya-package-item';
 		?>
-		<div class="walya-el-project-wrapper project-grid <?php echo esc_attr( $data['layout'] ) ?>">
-			<?php if ( $query->have_posts() ) : ?>
-				<div class="row">
-					<?php while ( $query->have_posts() ) : $query->the_post(); ?>
-						<article data-post-id="<?php the_ID(); ?>" <?php post_class( $post_classes ); ?>>
-							<?php Fns::get_template( "elementor/projects/project-{$data['layout']}", $data ); ?>
-						</article>
+        <div class="walya-el-packages-wrapper <?php echo esc_attr( $data['layout'] ) ?>">
+			<?php if ( $query->have_posts() ) :
+
+				?>
+                <div class="row">
+					<?php while ( $query->have_posts() ) : $query->the_post();
+
+						$meta_data = get_post_meta( get_the_ID(), 'walya_package_meta_data', true );
+
+						$regular_price = $meta_data['regular_price'] ?? '';
+						$offer_price   = $meta_data['offer_price'] ?? '';
+						$airlines      = $meta_data['airlines'] ?? '';
+						$accommodation = $meta_data['accommodation'] ?? '';
+						$contact       = $meta_data['contact'] ?? '';
+						$rating        = $meta_data['rating'] ?? '';
+						$booking_url   = $meta_data['booking_url'] ?? '';
+						?>
+                        <article data-post-id="<?php the_ID(); ?>" <?php post_class( $post_classes ); ?>>
+                            <div class="package-inner-wrapper">
+								<?php
+								if ( $data['thumbnail_visibility'] ) {
+									Thumbnail::get_thumbnail( $data['thumbnail_size'] );
+								} ?>
+
+                                <div class="entry-wrapper">
+                                    <div class="rating">
+                                        <span class="active">★</span>
+                                        <span class="active">★</span>
+                                        <span class="active">★</span>
+                                        <span class="active">★</span>
+                                        <span class="active">★</span>
+                                    </div>
+
+                                    <header class="entry-header">
+										<?php Fns::post_title_with_tag( $data['title_tag'] ); ?>
+                                    </header>
+
+
+                                    <div class="entry-meta">
+                                        <ul>
+                                            <li>
+                                                <i class="raw-icon-building"></i>
+												<?php echo esc_html( $accommodation ) ?>
+                                            </li>
+                                            <li>
+                                                <i class="raw-icon-paper-plane-top"></i>
+												<?php echo esc_html( $airlines ) ?>
+                                            </li>
+                                            <li>
+                                                <i class="raw-icon-sack-dollar"></i>
+												<?php echo esc_html( $offer_price ) ?>
+												<?php
+												if ( $regular_price ) {
+													echo " <s>$regular_price</s>";
+												}
+												?>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <footer class="entry-footer ">
+										<?php if ( $contact ) : ?>
+                                            <a class="btn phone-number" href="">
+												<?php echo $contact; ?>
+                                            </a>
+										<?php endif; ?>
+										<?php if ( $data['readmore_text'] ) : ?>
+                                            <a class="btn rawadd-read-more" href="<?php the_permalink(); ?>">
+												<?php echo esc_html( $data['readmore_text'] ); ?>
+                                            </a>
+										<?php endif; ?>
+
+                                    </footer>
+                                </div>
+                            </div>
+                        </article>
 					<?php
 					endwhile; ?>
-				</div>
+                </div>
 			<?php endif; ?>
 			<?php wp_reset_postdata(); ?>
-		</div>
+        </div>
 		<?php
 	}
 

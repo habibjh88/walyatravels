@@ -27,7 +27,7 @@ class ScriptController {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-
+		wp_enqueue_style( 'walya-style', WALYA_CORE_BASE_URL . 'assets/style.css', array(), self::get_version() );
 	}
 
 }

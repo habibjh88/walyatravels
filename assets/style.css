@@ -1,0 +1,78 @@
+.walya-el-packages-wrapper {
+}
+
+.walya-el-packages-wrapper .package-inner-wrapper {
+    background: #f2f2f2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.walya-el-packages-wrapper .package-inner-wrapper .entry-title {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 12px;
+    margin-bottom: 20px;
+    border-bottom: 2px dashed #ddd;
+}
+
+.walya-el-packages-wrapper .package-inner-wrapper .entry-wrapper {
+    padding: 0 25px 25px;
+}
+
+.walya-el-packages-wrapper .package-inner-wrapper .rating {
+    display: flex;
+    font-size: 20px;
+    color: #f08e4e;
+    margin-bottom: 10px;
+}
+
+.walya-el-packages-wrapper .package-inner-wrapper .entry-meta ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-meta ul li:not(:last-child){
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-meta ul li {
+    font-size: 15px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-meta ul li i{
+    color: var(--neuzin-primary-color);
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 25px;
+    gap: 5px;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer .rawadd-read-more,
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer .phone-number{
+    font-size: 14px;
+    border: 1px solid var(--neuzin-primary-color);
+    padding: 9px 16px;
+    border-radius: 10px;
+    min-width: 140px;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer .phone-number:hover {
+    background: var(--neuzin-primary-color);
+    color: #FFFFFF;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer .rawadd-read-more{
+    background: var(--neuzin-primary-color);
+    color: #FFFFFF;
+    border:none;
+}
+.walya-el-packages-wrapper .package-inner-wrapper .entry-footer .rawadd-read-more:hover {
+    background: var(--neuzin-secondary-color);
+    color: #FFFFFF;
+}
+.walya-el-packages-wrapper .package-inner-wrapper {
+}

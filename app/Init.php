@@ -24,6 +24,9 @@ final class Init {
 		add_action( 'after_setup_theme', [ $this, 'after_theme_loaded' ] );
 		add_action( 'init', [ $this, 'load_textdomain' ], 20 );
 
+		Hooks\FilterHooks::instance();
+		Hooks\ActionHooks::instance();
+
 		register_activation_hook( WALYA_CORE_BASE_FILE_NAME, [ Install::class, 'activate' ] );
 		register_deactivation_hook( WALYA_CORE_BASE_FILE_NAME, [ Install::class, 'deactivate' ] );
 	}
@@ -33,9 +36,6 @@ final class Init {
 	 * @return void
 	 */
 	public function after_theme_loaded() {
-		Hooks\FilterHooks::instance();
-		Hooks\ActionHooks::instance();
-		Generator\CPTGenerator::instance();
 		Controllers\ScriptController::instance();
 		Controllers\PostTypeController::instance();
 
